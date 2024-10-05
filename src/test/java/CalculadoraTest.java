@@ -2,21 +2,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 public class CalculadoraTest {
 
+	private Calculadora calc = new Calculadora();
+	private static int contador = 0;
+	
 	@Test
 	public void testSomar() {
-		Calculadora calc = new Calculadora();
+		System.out.println(++contador);
 		Assertions.assertTrue(calc.soma(2, 3) == 5);
 		Assertions.assertEquals(5, calc.soma(2, 3));
 	}
 	
 	@Test
 	public void assertivas() {
+		System.out.println(++contador);
 		Assertions.assertEquals("casa", "casa");
 		Assertions.assertNotEquals("Casa", "casa");
 		Assertions.assertTrue("Casa".equalsIgnoreCase("CASA"));
@@ -37,21 +39,20 @@ public class CalculadoraTest {
 	
 	@Test
 	public void deveRetornarNumIntNaDivisao() {
-		Calculadora calc = new Calculadora();
+		System.out.println(++contador);
 		float resultado = calc.dividir(6, 2);
 		Assertions.assertEquals(3, resultado);
 	}
 	
 	@Test
 	public void deveRetornarNumNegativoNaDivisao() {
-		Calculadora calc = new Calculadora();
+		System.out.println(++contador);
 		float resultado = calc.dividir(6, -2);
 		Assertions.assertEquals(-3, resultado);
 	}
 	
 	@Test
 	public void deveRetornarNumDecimalNaDivisao() {
-		Calculadora calc = new Calculadora();
 		float resultado = calc.dividir(10, 3);
 		Assertions.assertEquals(3.3333332538604736, resultado);
 		Assertions.assertEquals(3.33, resultado, 0.01);
@@ -59,7 +60,6 @@ public class CalculadoraTest {
 	
 	@Test
 	public void deveRetornarZeroComNumeradorZeroNaDivisao() {
-		Calculadora calc = new Calculadora();
 		float resultado = calc.dividir(0, 2);
 		Assertions.assertEquals(0, resultado);
 	}
