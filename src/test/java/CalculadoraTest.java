@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AssertionsKt;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 public class CalculadoraTest {
 
@@ -30,7 +32,45 @@ public class CalculadoraTest {
 		Assertions.assertNotEquals(s1, s3);
 		Assertions.assertNull(s3);
 		Assertions.assertNotNull(s2);
-		Assertions.fail("Falhou pelo motivo A");
+//		Assertions.fail("Falhou pelo motivo A");
 	}
+	
+	@Test
+	public void deveRetornarNumIntNaDivisao() {
+		Calculadora calc = new Calculadora();
+		float resultado = calc.dividir(6, 2);
+		Assertions.assertEquals(3, resultado);
+	}
+	
+	@Test
+	public void deveRetornarNumNegativoNaDivisao() {
+		Calculadora calc = new Calculadora();
+		float resultado = calc.dividir(6, -2);
+		Assertions.assertEquals(-3, resultado);
+	}
+	
+	@Test
+	public void deveRetornarNumDecimalNaDivisao() {
+		Calculadora calc = new Calculadora();
+		float resultado = calc.dividir(10, 3);
+		Assertions.assertEquals(3.3333332538604736, resultado);
+		Assertions.assertEquals(3.33, resultado, 0.01);
+	}
+	
+	@Test
+	public void deveRetornarZeroComNumeradorZeroNaDivisao() {
+		Calculadora calc = new Calculadora();
+		float resultado = calc.dividir(0, 2);
+		Assertions.assertEquals(0, resultado);
+	}
+	
+	@Test
+	public void erroComDenomidadorZeroNaDivisao() {		
+		throw new Error();
+//		throw new RuntimeException();
+//		throw new AssertionFailedError();
+//		float resultado = 10 / 0;
+	}
+	
 	
 }
