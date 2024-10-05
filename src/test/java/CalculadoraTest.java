@@ -1,13 +1,39 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CalculadoraTest {
 
 	private Calculadora calc = new Calculadora();
 	private static int contador = 0;
+	
+	
+	@BeforeEach
+	public void setup() {
+		System.out.println("^^^");
+	}
+
+	@AfterEach
+	public void teardown() {
+		System.out.println("vvv");
+	}
+	
+	@BeforeAll
+	public static void setupAll() {
+		System.out.println("--- Before All ---");
+	}
+	
+	@AfterAll
+	public static void teardownAll() {
+		System.out.println("--- After All ---");
+
+	}
 	
 	@Test
 	public void testSomar() {
