@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import br.ce.sjanu.barriga.domain.Conta;
 import br.ce.sjanu.barriga.domain.Usuario;
 
 /**
@@ -32,12 +33,13 @@ public class BuilderMaster {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append(format("public class %s {\n", nomeClasse));
-		List<Field> declaredFields = getClassFields(classe).stream()
-				.filter(campo -> !campo.getName().equals("serialVersionUID") && !Modifier.isStatic(campo.getModifiers()))
+		List<Field> declaredFields = getClassFields(classe).stream().filter(
+				campo -> !campo.getName().equals("serialVersionUID") && !Modifier.isStatic(campo.getModifiers()))
 				.collect(Collectors.toList());
 		declaredFields.forEach(campo -> {
-			if (campo.getType().getSimpleName().equals("List")) 
-				builder.append(format("\tprivate %s<%s> %s;\n", campo.getType().getSimpleName(), getGenericSimpleName(campo), campo.getName()));
+			if (campo.getType().getSimpleName().equals("List"))
+				builder.append(format("\tprivate %s<%s> %s;\n", campo.getType().getSimpleName(),
+						getGenericSimpleName(campo), campo.getName()));
 			else
 				builder.append(format("\tprivate %s %s;\n", campo.getType().getSimpleName(), campo.getName()));
 		});
@@ -51,19 +53,22 @@ public class BuilderMaster {
 		builder.append("\t}\n\n");
 
 		builder.append(format("\tprivate static void inicializarDadosPadroes(%s builder) {\n", nomeClasse));
-		declaredFields.forEach(campo -> builder.append(format("\t\tbuilder.%s = %s;\n", campo.getName(), getDefaultParameter(campo))));
+		declaredFields.forEach(
+				campo -> builder.append(format("\t\tbuilder.%s = %s;\n", campo.getName(), getDefaultParameter(campo))));
 		builder.append("\t}\n\n");
 
 		for (Field campo : declaredFields) {
 			registrarImports(campo.getType().getCanonicalName());
 			if (campo.getType().getSimpleName().equals("List")) {
 				registrarImports("java.util.Arrays");
-				builder.append(format("\tpublic %s comLista%s%s(%s... %s) {\n", 
-					nomeClasse, campo.getName().substring(0, 1).toUpperCase(), campo.getName().substring(1), getGenericSimpleName(campo), campo.getName()));
+				builder.append(format("\tpublic %s comLista%s%s(%s... %s) {\n", nomeClasse,
+						campo.getName().substring(0, 1).toUpperCase(), campo.getName().substring(1),
+						getGenericSimpleName(campo), campo.getName()));
 				builder.append(format("\t\tthis.%s = Arrays.asList(%s);\n", campo.getName(), campo.getName()));
 			} else {
-				builder.append(format("\tpublic %s com%s%s(%s %s) {\n",
-					nomeClasse, campo.getName().substring(0, 1).toUpperCase(), campo.getName().substring(1), campo.getType().getSimpleName(), campo.getName()));
+				builder.append(format("\tpublic %s com%s%s(%s %s) {\n", nomeClasse,
+						campo.getName().substring(0, 1).toUpperCase(), campo.getName().substring(1),
+						campo.getType().getSimpleName(), campo.getName()));
 				builder.append(format("\t\tthis.%s = %s;\n", campo.getName(), campo.getName()));
 			}
 			builder.append("\t\treturn this;\n");
@@ -74,7 +79,7 @@ public class BuilderMaster {
 		builder.append(format("\t\treturn new %s(", classe.getSimpleName()));
 		boolean first = true;
 		for (Field campo : declaredFields) {
-			if(first) {
+			if (first) {
 				first = false;
 			} else {
 				builder.append(", ");
@@ -86,7 +91,7 @@ public class BuilderMaster {
 		builder.append("}");
 
 		for (String str : listaImports) {
-			if(!str.contains("java.lang."))
+			if (!str.contains("java.lang."))
 				System.out.println(str);
 		}
 		System.out.println(format("import %s;\n", classe.getCanonicalName()));
@@ -138,6 +143,6 @@ public class BuilderMaster {
 
 	public static void main(String[] args) {
 		BuilderMaster master = new BuilderMaster();
-		master.gerarCodigoClasse(Usuario.class);
+		master.gerarCodigoClasse(Conta.class);
 	}
 }

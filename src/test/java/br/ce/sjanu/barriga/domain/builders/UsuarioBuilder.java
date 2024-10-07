@@ -8,7 +8,8 @@ public class UsuarioBuilder {
 	private String email;
 	private String senha;
 
-	private UsuarioBuilder(){}
+	private UsuarioBuilder() {
+	}
 
 	public static UsuarioBuilder umUsuario() {
 		UsuarioBuilder builder = new UsuarioBuilder();
